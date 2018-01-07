@@ -26,5 +26,23 @@ class Telegro
     {
     	return $this->base_url;
     }
+
+    private function execute($options)
+    {
+        $default_options = [
+            'header' => 'application/json',
+            'ssl_verifier' => true,
+            'values' => null,
+        ];
+        $options = array_merge($default_options, $options);
+
+        $curl = curl_init(); 
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $options['header']);
+        curl_setopt($curl, CURLOPT_URL, $this->server); 
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifier']);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $options['values']); 
+        curl_exec($curl);
+    }
 }
 ?>
