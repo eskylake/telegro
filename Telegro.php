@@ -45,6 +45,9 @@ class Telegro
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifier']);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $options['values']); 
         curl_exec($curl);
+        $curl_error = curl_error($curl);
+        curl_close ($curl);
+        return !$curl_error;
     }
 }
 ?>
