@@ -27,6 +27,14 @@ class Telegro
         return $this->base_url;
     }
 
+    public function setWebhook($hook_url)
+    {
+        return $this->execute([
+            'method' => 'setwebhook',
+            'values' => ['url' => $hook_url]
+        ]);
+    }
+
     private function execute($options)
     {
         $default_options = [
