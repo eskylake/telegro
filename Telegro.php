@@ -35,6 +35,14 @@ class Telegro
         ]);
     }
 
+    public function unsetWebhook()
+    {
+        return $this->execute([
+            'method' => 'setwebhook',
+            'values' => ['url' => '']
+        ]);
+    }
+
     private function execute($options)
     {
         $default_options = [
