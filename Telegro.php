@@ -24,22 +24,24 @@ class Telegro
 
     public function getBaseUrl()
     {
-    	return $this->base_url;
+        return $this->base_url;
     }
 
     private function execute($options)
     {
         $default_options = [
-            'header' => 'application/json',
+            'header' => ['application/json'],
             'ssl_verifier' => true,
-            'values' => null,
+            'method' => null,
+            'values' => [],
         ];
         $options = array_merge($default_options, $options);
+        $request_url = $this->server . "/" . $options['method'];
 
         $curl = curl_init(); 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $options['header']);
-        curl_setopt($curl, CURLOPT_URL, $this->server); 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($curl, CURLOPT_URL, $request_url); 
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, false); 
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifier']);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $options['values']); 
         curl_exec($curl);
