@@ -44,7 +44,7 @@ class Telegro
             'values' => [],
         ];
         $options = array_merge($default_options, $options);
-        $request_url = $this->server . "/" . $options['method'];
+        $request_url = "{$this->server}/{$options['method']}";
 
         $curl = curl_init(); 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $options['header']);
