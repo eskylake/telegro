@@ -78,11 +78,10 @@ class Telegro
             'method' => 'setwebhook',
             'values' => ['url' => '']
         ]);
-    }
+    }  
 
     /**
-     * This method sends curl request to the server to run the given method and return true or false depends on curl response.
-     * It returns false when curl responds error and vice versa.  
+     * This method sends curl request to the server to run the given method and return curl response body.
      * @param 
      * $options [ 
      *  header => Could be any mime-type. Defaults to 'application/json'.
@@ -90,7 +89,7 @@ class Telegro
      *  method => Could be any Telegram api method but not NULL.
      *  values => The method's parameters.
      * ]
-     * @return TRUE | FALSE.
+     * @return response body.
      * @throws Exception if the method does not exist.
      */
     private function execute($options)
@@ -109,16 +108,19 @@ class Telegro
             throw new Exception("Method value could not be null.");
         }
         //Initialize curl to send request.
-        $curl = curl_init(); 
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $options['header']);
-        curl_setopt($curl, CURLOPT_URL, $request_url); 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, false); 
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifier']);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $options['values']); 
-        curl_exec($curl);
-        $curl_error = curl_error($curl);
-        curl_close ($curl);
-        return !$curl_error;
+        $curl_handler = curl_init(); 
+        curl_setopt($curl_handler, CURLOPT_HTTPHEADER, $options['header']);
+        curl_setopt($curl_handler, CURLOPT_URL, $request_url); 
+        curl_setopt($curl_handler, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($curl_handler, CURLOPT_HEADER, true);
+        curl_setopt($curl_handler, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifier']);
+        curl_setopt($curl_handler, CURLOPT_POSTFIELDS, $options['values']); 
+        $result = curl_exec($curl_handler);
+        $header_size = curl_getinfo($curl_handler, CURLINFO_HEADER_SIZE);
+        $header = substr($result, 0, $header_size);
+        $body = substr($result, $header_size);
+        curl_close($curl_handler);
+        return $body;
     }
 }
 ?>
