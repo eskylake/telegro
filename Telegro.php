@@ -93,6 +93,19 @@ class Telegro
     }
 
     /**
+     * Get all messages have been received by bot.
+     * @throws error. Conflict: can't use getUpdates method while webhook is active.
+     * @return Object.
+     */
+    public function getUpdates()
+    {
+        $result = $this->execute([
+            'method' => 'getUpdates'
+        ]);
+        return json_decode($result);
+    }
+
+    /**
      * This method sends curl request to the server to run the given method and return curl response body.
      * @param 
      * $options [ 
