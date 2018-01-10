@@ -78,7 +78,19 @@ class Telegro
             'method' => 'setwebhook',
             'values' => ['url' => '']
         ]);
-    }  
+    } 
+
+    /**
+     * Get bot information.
+     * @return Object.
+     */
+    public function getMe()
+    {
+        $result = $this->execute([
+            'method' => 'getMe'
+        ]);
+        return json_decode($result);
+    }
 
     /**
      * This method sends curl request to the server to run the given method and return curl response body.
