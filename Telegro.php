@@ -106,6 +106,52 @@ class Telegro
     }
 
     /**
+     * Send text messages.
+     * @param 
+     * $options [ 
+     *  chat_id => Unique identifier for the target chat or username of the target channel.
+     *  text => Text of the message to be sent.
+     *  parse_mode => Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+     *  disable_web_page_preview => Disables link previews for links in this message. Defaults to false.
+     *  disable_notification => Sends the message silently. Users will receive a notification with no sound. Defaults to false.
+     *  reply_to_message_id => If the message is a reply, ID of the original message.
+     *  reply_markup =>  A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+     * ]
+     * @throws error. chat_id can not be null.
+     * @throws error. text can not be null.
+     * @return Object.
+     */
+    public function sendMessage($options)
+    {
+        $default_options = [
+            'chat_id' => null,
+            'text' => '',
+            'parse_mode' => '',
+            'disable_web_page_preview' => false,
+            'disable_notification' => false,
+            'reply_to_message_id' => null,
+            'reply_markup' => null,
+        ];
+        $options = array_merge($default_options, $options);
+
+        //Throw exception if chat_id value is null.
+        if (!$options['chat_id']) {
+            throw new Exception("chat_id value could not be null.");
+        }
+
+        //Throw exception if text value is null.
+        if (!$options['text']) {
+            throw new Exception("text value could not be null.");
+        }
+
+        $result = $this->execute([
+            'method' => 'sendMessage',
+            'values' => $options
+        ]);
+        return json_decode($result);
+    }
+
+    /**
      * This method sends curl request to the server to run the given method and return curl response body.
      * @param 
      * $options [ 
