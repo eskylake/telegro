@@ -69,6 +69,17 @@ class Telegro
     }
 
     /**
+     * Get webhook information.
+     * @return Object.
+     */
+    public function getWebhookInfo()
+    {
+        return $this->execute([
+            'method' => 'getwebhookinfo',
+        ]);
+    }
+
+    /**
      * Unset (Remove) webhook.
      * @return TRUE | FALSE.
      */
