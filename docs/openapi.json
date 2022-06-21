@@ -1,0 +1,134 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SMS Gateway",
+    "version": "1.0.0",
+    "description": "\n### Disclaimer\n\nBy using this [API](https://en.wikipedia.org/wiki/API), assume you know what is doing.\n\n#### Support\n\nAsk the for help from **aasaam software development group** support center.\n\n* +982191008212\n* 3rd Floor, No 14, Noori(Kambiz) St, West Zartosht St, District 6, Tehran, IR\n",
+    "contact": {
+      "name": "aasaam",
+      "url": "https://aasaam.com/",
+      "email": "info@aasaam.com"
+    },
+    "license": {
+      "name": "CC-BY-3.0",
+      "url": "https://creativecommons.org/licenses/by/3.0/"
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "Access for none browser client like mobile applications",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "cookieToken": {
+        "description": "Default access for web application",
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "AuthToken"
+      },
+      "userApiKey": {
+        "description": "User secret",
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-user-api-key"
+      }
+    },
+    "schemas": {
+      "GenericResponse": {
+        "title": "Generic Response",
+        "description": "Internal Server Error",
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "example": 500
+          },
+          "message": {
+            "type": "string",
+            "example": "Internal Server Error"
+          },
+          "validations": {
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "array",
+            "description": "During development stage you can see stack trace",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SendMessage": {
+        "title": "Send Message",
+        "description": "Send Message request",
+        "type": "object",
+        "required": [
+          "mobile",
+          "message"
+        ],
+        "properties": {
+          "mobile": {
+            "description": "Mobile phone number with country prefix",
+            "oneOf": [
+              {
+                "type": "string",
+                "default": "",
+                "minLength": 6,
+                "maxLength": 24
+              },
+              {
+                "type": "array",
+                "default": [],
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 6,
+                  "maxLength": 24
+                }
+              }
+            ]
+          },
+          "message": {
+            "type": "string",
+            "default": "",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        }
+      },
+      "SendResult": {
+        "title": "Send Result",
+        "description": "Send Message response result",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1,
+              "description": "Send message identifier"
+            },
+            "mobile": {
+              "type": "string",
+              "example": "+989123457890",
+              "description": "Mobile number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SMS Gateway",
+      "url": "/"
+    }
+  ],
+  "paths": {}
+}
